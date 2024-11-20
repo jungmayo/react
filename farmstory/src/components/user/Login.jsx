@@ -1,15 +1,58 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { postUserLogin } from "../../api/userAPI";
+import { useDispatch } from "react-redux";
+import { login } from "../../slices/userSlice";
+
+const initState = {
+  uid: "",
+  pass: "",
+};
+
 export default function Login() {
+  const [user, setUser] = useState({ ...initState });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const changeHandler = (e) => {
+    e.preventDefault();
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+
+    //로그인 (끝나고 리턴돼서 실행되도록)
+    const tokens = await postUserLogin(user);
+    console.log("tokens : " + JSON.stringify(tokens));
+
+    if (tokens) {
+      dispatch(login(tokens));
+      //메인전환
+      navigate("/");
+    } else {
+      alert("로그인에 실패했습니다. 아이디와 비밀번호를 확인하세요");
+    }
+
+    //리덕스 reducer(login) 호출
+  };
+
   return (
     <section className="login">
-      <form action="#">
+      <form onSubmit={submitHandler}>
         <table border="0">
           <tr>
             <td>
               <img src="/images/login_ico_id.png" alt="아이디" />
             </td>
             <td>
-              <input type="text" name="uid" placeholder="아이디 입력" />
+              <input
+                type="text"
+                name="uid"
+                placeholder="아이디 입력"
+                value={user.uid}
+                onChange={changeHandler}
+              />
             </td>
           </tr>
           <tr>
@@ -17,7 +60,13 @@ export default function Login() {
               <img src="/images/login_ico_pw.png" alt="비밀번호" />
             </td>
             <td>
-              <input type="password" name="pass" placeholder="비밀번호 입력" />
+              <input
+                type="password"
+                name="pass"
+                placeholder="비밀번호 입력"
+                value={user.pass}
+                onChange={changeHandler}
+              />
             </td>
           </tr>
         </table>

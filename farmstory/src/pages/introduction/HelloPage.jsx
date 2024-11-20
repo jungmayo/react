@@ -1,6 +1,3 @@
-import { Link } from "react-router-dom";
-import Footer from "../../components/common/Footer";
-import Header from "../../components/common/Header";
 import DefaultLayout from "../../layouts/DefaultLayout";
 import SubLayout from "../../layouts/SubLayout";
 

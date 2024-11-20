@@ -1,9 +1,8 @@
-import { Link, useLocation, useSearchParams } from "react-router-dom";
 import Aside from "../components/common/Aside";
 import useCates from "../hooks/useCates";
 import Nav from "../components/common/Nav";
 
-export default function SubLayout({ children }) {
+export default function BoardLayout({ children }) {
   const [cate1, cate2] = useCates();
 
   return (
@@ -27,7 +26,7 @@ export default function SubLayout({ children }) {
       </div>
       <section className={cate1}>
         <Aside />
-        <article className={cate2}>
+        <article id="board">
           <Nav />
           {children}
         </article>

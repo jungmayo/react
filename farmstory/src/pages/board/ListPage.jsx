@@ -1,12 +1,13 @@
+import List from "../../components/board/List";
+import BoardLayout from "../../layouts/BoardLayout";
 import DefaultLayout from "../../layouts/DefaultLayout";
-import SubLayout from "../../layouts/SubLayout";
 
 export default function ListPage() {
   return (
     <DefaultLayout>
-      <SubLayout>
-        <h3>Board List</h3>
-      </SubLayout>
+      <BoardLayout>
+        <List />
+      </BoardLayout>
     </DefaultLayout>
   );
 }

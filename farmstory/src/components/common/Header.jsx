@@ -13,7 +13,7 @@ export default function Header() {
           <Link to="/user/terms">회원가입 |</Link>
           <a href="./myinfo/cart.html">나의정보 |</a>
           <a href="#">로그아웃 |</a>
-          <a href="./admin/">관리자 |</a>
+          <Link to="/admin">관리자 |</Link>
           <a href="./community/qna.html">고객센터</a>
         </p>
         <img src="/images/head_txt_img.png" alt="3만원 이상 무료배송" />
