@@ -39,6 +39,7 @@ const userSlice = createSlice({
     logout: (state) => {
       console.log("로그아웃...");
 
+      
       //상태 초기화
       state.username = null;
       state.role = null;
