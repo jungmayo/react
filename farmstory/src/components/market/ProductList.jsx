@@ -1,4 +1,41 @@
+import { useEffect, useState } from "react";
+import ProductListItem from "./ProductListItem";
+import { useSearchParams } from "react-router-dom";
+import { getProduct } from "../../api/productAPI";
+
+const initState = {
+  dtoList: [],
+  cate: "",
+  pg: 1,
+  size: 10,
+  total: 0,
+  startNo: 0,
+  start: 0,
+  end: 0,
+  prev: false,
+  next: false,
+  type: null,
+  keyword: null,
+};
+
 export default function ProductList() {
+  const [data, setData] = useState(initState);
+
+  const [searchParams] = useSearchParams();
+  const pg = searchParams.get("pg") || 1; //pg가 있으면 그 값으로 아니면 1로 초기화
+
+  //한번만 실행되기때문에 업데이트 될 때마다 호출시켜줘야 함 (cate2가 바뀔때마다 실행되도록 []안에 cate2를 넣어야 함)
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getProduct(pg);
+      console.log(data);
+
+      //서버에서 받아온 setData 상태초기화
+      setData(data);
+    };
+    fetchData();
+  }, [pg]); // cate2가 변경될 때마다 useEffect가 실행
+
   return (
     <>
       <p className="sort">
@@ -21,111 +58,9 @@ export default function ProductList() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <a href="./view.html">
-                <img
-                  src="../images/market_item1.jpg"
-                  className="thumbnail"
-                  alt="사과 500g"
-                />
-              </a>
-            </td>
-            <td className="type">과일</td>
-            <td className="title">
-              <a href="#">사과 500g</a>
-            </td>
-            <td className="discount">10%</td>
-            <td className="point">400P</td>
-            <td className="price">
-              <strong>3,600</strong>
-              <del>4,000</del>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <a href="./view.html">
-                <img
-                  src="../images/market_item2.jpg"
-                  className="thumbnail"
-                  alt="사과 500g"
-                />
-              </a>
-            </td>
-            <td className="type">과일</td>
-            <td className="title">
-              <a href="#">전남 완주 배 5kg</a>
-            </td>
-            <td className="discount">10%</td>
-            <td className="point">400P</td>
-            <td className="price">
-              <strong>3,600</strong>
-              <del>4,000</del>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <a href="./view.html">
-                <img
-                  src="../images/market_item3.jpg"
-                  className="thumbnail"
-                  alt="사과 500g"
-                />
-              </a>
-            </td>
-            <td className="type">과일</td>
-            <td className="title">
-              <a href="#">방울 토마토</a>
-            </td>
-            <td className="discount">10%</td>
-            <td className="point">400P</td>
-            <td className="price">
-              <strong>3,600</strong>
-              <del>4,000</del>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <a href="./view.html">
-                <img
-                  src="../images/market_item6.jpg"
-                  className="thumbnail"
-                  alt="사과 500g"
-                />
-              </a>
-            </td>
-            <td className="type">곡류</td>
-            <td className="title">
-              <a href="#">무농약 현미</a>
-            </td>
-            <td className="discount">10%</td>
-            <td className="point">400P</td>
-            <td className="price">
-              <strong>3,600</strong>
-              <del>4,000</del>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <a href="./view.html">
-                <img
-                  src="../images/market_item7.jpg"
-                  className="thumbnail"
-                  alt="사과 500g"
-                />
-              </a>
-            </td>
-            <td className="type">야채</td>
-            <td className="title">
-              <a href="#">팜스토리 하루야채 샐러드</a>
-            </td>
-            <td className="discount">10%</td>
-            <td className="point">400P</td>
-            <td className="price">
-              <strong>3,600</strong>
-              <del>4,000</del>
-            </td>
-          </tr>
+          {data.dtoList.map((product, index) => (
+            <ProductListItem key={index} product={product} />
+          ))}
         </tbody>
       </table>
 

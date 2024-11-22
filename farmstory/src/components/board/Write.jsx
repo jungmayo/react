@@ -10,6 +10,7 @@ export default function Write() {
 
   // prettier-ignore
   const [article, setArticle] = useState({
+                                      cate : cate2,
                                       title: "",
                                       content: "",
                                       writer: username,
@@ -20,12 +21,13 @@ export default function Write() {
     setArticle({ ...article, [e.target.name]: e.target.value });
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    const result = postArticle(article, accessToken);
-    if (!result) {
+    const result = await postArticle(article, accessToken);
+    console.log("result :" + result);
+    if (result > 0) {
       alert("글이 작성되었습니다.");
-      navigate("/board/list?cate1" + cate1 + "&cate2=" + cate2);
+      navigate("/board/list?cate1=" + cate1 + "&cate2=" + cate2);
     }
   };
 
